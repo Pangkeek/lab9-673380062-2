@@ -1,0 +1,86 @@
+{
+  "info": {
+    "name": "Lab9",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "accountId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "1 Create account",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/accounts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"accountNumber\": \"1234567890\",\n  \"ownerName\": \"Student\",\n  \"balance\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200) { pm.collectionVariables.set(\"accountId\", pm.response.json().id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2 Deposit",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/accounts/{{accountId}}/deposit",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 1000\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "3 Get account",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/accounts/{{accountId}}"
+      }
+    }
+  ]
+}
